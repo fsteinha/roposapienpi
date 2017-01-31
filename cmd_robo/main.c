@@ -60,8 +60,10 @@ static int i_PowerOff         ;
 static int i_DemoKarate       ;
 static int i_DemoRude         ;
 static int i_Dance            ;
+static int i_Help             ;
  
 static enRoboCmd en_GetCmd(int i_Flag);
+static void PrintHelp();
 
 int main (int argc, char * const argv[])
 {
@@ -118,7 +120,8 @@ int main (int argc, char * const argv[])
       {"poweroff"           , no_argument, &i_PowerOff         ,   1 },
       {"wakeup"             , no_argument, &i_Wakeup           ,   1 },
       {"reset"              , no_argument, &i_Reset            ,   1 },
-      
+      {"help"               , no_argument, &i_Help             , 'h' },
+
       
       {                     0,          0,               0 ,   0 }
     };
@@ -145,6 +148,9 @@ int main (int argc, char * const argv[])
         break;
       case 's':
         i_StopMoving = 1;
+        break;
+      case 'h':
+        i_Help = 1;
         break;
       case '?':
         /* getopt_long already printed an error message. */
@@ -199,7 +205,10 @@ int main (int argc, char * const argv[])
   if (i_VerboseFlag)
     printf("cmd: %s, 0x%02X\n", pc_Verbose, en_Cmd);
   
-  robosapien_iSendCmd(en_Cmd);
+  if (!i_Help)
+    robosapien_iSendCmd(en_Cmd);
+  else
+    PrintHelp();
 
   return 0 ;
 }
@@ -247,3 +256,49 @@ static enRoboCmd en_GetCmd(int i_Flag)
  
   
 }  
+
+static void PrintHelp()
+{
+  printf( "--verbose\n");
+  printf( "--brief\n");
+  printf( "--right-arm-up\n");
+  printf( "--right-arm-out\n");
+  printf( "--tilt-body-right\n");
+  printf( "--right-arm-down\n");
+  printf( "--right-arm-in\n");
+  printf( "--left-arm-up\n");
+  printf( "--left-arm-out\n");
+  printf( "--tilt-body-left\n");
+  printf( "--left-arm-down\n");
+  printf( "--left-arm-in\n");
+
+  printf( "--bulldozer\n");
+  printf( "--demo-karate\n");
+  printf( "--demo-rude\n");
+
+  printf( "--right-hand-strike-1\n");
+  printf( "--right-hand-strike-2\n");
+  printf( "--right-hand-strike-3\n");
+
+  printf( "--left-hand-strike-1\n");
+  printf( "--left-hand-strike-2\n");
+  printf( "--left-hand-strike-3\n");
+
+  printf( "--right-hand-throw\n");
+  printf( "--right-hand-thump\n");
+
+  printf( "--left-hand-throw\n");
+  printf( "--left-hand-thump\n");
+
+  printf( "-r --turn-right\n");
+  printf( "-l --turn-left\n");
+  printf( "-f --walk-forward\n");
+  printf( "-b --walk-backward\n");
+  printf( "-s --stop-moving\n");
+
+  printf( "--poweroff\n");
+  printf( "--wakeup\n");
+  printf( "--reset\n");
+  printf( "--help\n");
+
+}
